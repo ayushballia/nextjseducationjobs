@@ -1,76 +1,87 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { JobContext } from "@/app/components/profileUpdate/JobContext";
 import TextEditor from "./TextEditor";
 import Dropdown from "./DropDown";
 import CustomSelect from "./CustomSelect";
 import FormSection from "./FormSection";
-import MaleIcon from "@/app/images/profileUpdate/MaleIcon.svg";
-import FemaleIcon from "@/app/images/profileUpdate/FemaleIcon.svg";
+import MaleIcon from "../../images/profileUpdate/MaleIcon.svg";
+import FemaleIcon from "../../images/profileUpdate/FemaleIcon.svg";
+import RightIcon from "../../images/profileUpdate/fi_arrow-right.svg";
 import OptionButtonsWithIcon from "./OptionButtonsWithIcon";
 import OtherBenefits from "./OtherBenefits";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setQualification,
+  setCourse,
+  setFresher,
+  setMinEx,
+  setMaxEx,
+  setEnglishLevel,
+  setVacancies,
+  setSelectedGender,
+  setMinAge,
+  setMaxAge,
+  setLanguage,
+  setAssets,
+} from '../../libs/store/features/jobDescription/jobDescriptionSlice';
+import Image from "next/image";
 
 const preferredGenderOption = [
-  { label: "Teaching", icon: MaleIcon },
-  { label: "Non-Teaching", icon: FemaleIcon },
-  { label: "Any", icon: "" },
+  { label: "Male", icon: MaleIcon },
+  { label: "Female", icon: FemaleIcon },
+  { label: "Other", icon: "" },
 ];
 
 const JobDescriptionComponent = () => {
-  const { jobDescription, setJobDescription } = useContext(JobContext);
+  const jobDescription = useSelector((state) => state.jobDescription);
+  const dispatch = useDispatch();
   const router = useRouter();
 
-  const [selectedGender, setSelectedGender] = useState(
-    preferredGenderOption[0]
-  );
+  // const [selectedGender, setSelectedGender] = useState(
+  //   preferredGenderOption[0]
+  // );
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setJobDescription((prevDescription) => ({
-      ...prevDescription,
-      [name]: value,
-    }));
-  };
-
-  const handleDropdownChange = (name, value) => {
-    setJobDescription((prevDescription) => ({
-      ...prevDescription,
-      [name]: value,
-    }));
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setJobDescription((prevDescription) => ({
-      ...prevDescription,
-      [name]: value,
-    }));
-  };
-
-  const handleCheckboxChange = (e) => {
-    const { name, checked } = e.target;
-    setJobDescription((prevDescription) => ({
-      ...prevDescription,
-      [name]: checked,
-    }));
+  const handleChange = (name, value) => { // Changed handleChange function to accept name and value directly
+    dispatch(name(value)); // Dispatching actions directly by passing action creators
   };
 
   const handleCustomSelectChange = (name, value) => {
-    setJobDescription((prevDescription) => ({
-      ...prevDescription,
-      [name]: value,
-    }));
+    dispatch(setEnglishLevel(value));
   };
 
   const handleGenderSelect = (option) => {
-    setSelectedGender(option);
+    dispatch(setSelectedGender(option));
   };
+
+  // const handleDropdownChange = (name, value) => {
+  //   setJobDescription((prevDescription) => ({
+  //     ...prevDescription,
+  //     [name]: value,
+  //   }));
+  // };
+
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setJobDescription((prevDescription) => ({
+  //     ...prevDescription,
+  //     [name]: value,
+  //   }));
+  // };
+
+  // const handleCheckboxChange = (e) => {
+  //   const { name, checked } = e.target;
+  //   setJobDescription((prevDescription) => ({
+  //     ...prevDescription,
+  //     [name]: checked,
+  //   }));
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    router.push("/profile-update/interview-process");
+    console.log("form data", jobDescription);
+    router.push("/interview-process");
   };
 
   const qualificationOptions = [
@@ -102,14 +113,14 @@ const JobDescriptionComponent = () => {
           label="Qualification"
           options={qualificationOptions}
           value={jobDescription.qualification || ""}
-          onChange={(value) => handleDropdownChange("qualification", value)}
+          onChange={(value) => dispatch(setQualification(value))}
         />
 
         <Dropdown
           label="Course"
           options={courseOptions}
           value={jobDescription.course || ""}
-          onChange={(value) => handleDropdownChange("course", value)}
+          onChange={(value) => dispatch(setCourse(value))}
         />
       </div>
 
@@ -123,7 +134,7 @@ const JobDescriptionComponent = () => {
           name="fresher"
           className="rounded"
           checked={jobDescription.fresher || false}
-          onChange={handleCheckboxChange}
+          onChange={(e) => dispatch(setFresher(e.target.checked))}
         />
       </div>
 
@@ -140,7 +151,7 @@ const JobDescriptionComponent = () => {
             placeholder="Min"
             className="text-[14px] text-[#9199A3] font-normal w-full border rounded-[15px] p-[17px]"
             value={jobDescription.minEx || ""}
-            onChange={handleInputChange}
+            onChange={(e) => dispatch(setMinEx(e.target.value))}
           />
         </label>
 
@@ -156,7 +167,7 @@ const JobDescriptionComponent = () => {
             placeholder="Max"
             className="text-[14px] text-[#9199A3] font-normal w-full border rounded-[15px] p-[17px]"
             value={jobDescription.maxEx || ""}
-            onChange={handleInputChange}
+            onChange={(e) => dispatch(setMaxEx(e.target.value))}
           />
         </label>
 
@@ -180,7 +191,7 @@ const JobDescriptionComponent = () => {
             placeholder="Vacancies"
             className="text-[14px] text-[#9199A3] font-normal w-full border rounded-[15px] p-[17px]"
             value={jobDescription.vacancies || ""}
-            onChange={handleInputChange}
+            onChange={(e) => dispatch(setVacancies(e.target.value))}
           />
         </label>
       </div>
@@ -206,7 +217,7 @@ const JobDescriptionComponent = () => {
             placeholder="Min age"
             className="text-[14px] text-[#9199A3] font-normal w-full border rounded-[15px] p-[17px]"
             value={jobDescription["min-age"] || ""}
-            onChange={handleInputChange}
+            onChange={(e) => dispatch(setMinAge(e.target.value))}
           />
           <p className="bg-[#0A65CC] text-[16px] text-white font-bold  rounded-[8px] px-[18px] py-[16px]">
             To
@@ -218,7 +229,7 @@ const JobDescriptionComponent = () => {
             placeholder="Max age"
             className="text-[14px] text-[#9199A3] font-normal w-full border rounded-[15px] p-[17px]"
             value={jobDescription["max-age"] || ""}
-            onChange={handleInputChange}
+            onChange={(e) => dispatch(setMaxAge(e.target.value))}
           />
         </div>
       </FormSection>
@@ -230,8 +241,8 @@ const JobDescriptionComponent = () => {
           id="languages"
           placeholder="Enter preferred languages"
           className="text-[14px] text-[#9199A3] font-normal w-full border rounded-[15px] p-[17px]"
-          value={jobDescription["language"] || ""}
-          onChange={handleInputChange}
+          value={jobDescription.language || ""}
+          onChange={(e) => dispatch(setLanguage(e.target.value))}
         />
       </FormSection>
 
@@ -247,8 +258,8 @@ const JobDescriptionComponent = () => {
           id="languages"
           placeholder="Enter preferred Assets"
           className="text-[14px] text-[#9199A3] font-normal w-full border rounded-[15px] p-[17px]"
-          value={jobDescription["assets"] || ""}
-          onChange={handleInputChange}
+          value={jobDescription.assets || ""}
+          onChange={(e) => dispatch(setAssets(e.target.value))}
         />
       </FormSection>
 
@@ -267,9 +278,10 @@ const JobDescriptionComponent = () => {
 
       <button
         type="submit"
-        className="bg-[#0A65CC] text-white text-[16px] font-bold px-[32px] py-[16px] rounded-[20px] mt-6"
+        className="flex items-center gap-3 bg-[#0A65CC] text-white text-[16px] font-bold px-[32px] py-[16px] rounded-[20px]"
       >
-        Save & Next
+        Save & Next{" "}
+        <Image src={RightIcon} width={24} height={24} alt="right icon" />
       </button>
     </form>
   );

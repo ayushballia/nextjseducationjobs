@@ -3,19 +3,28 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import TeachingIcon from "@/app/images/profileUpdate/teaching-PQcw9eHGUz.svg";
-import NonTeachingIcon from "@/app/images/profileUpdate/Group 459 1.svg";
-import DownIcon from "@/app/images/profileUpdate/fi_chevron-down.svg";
-import RupeesIcon from "@/app/images/profileUpdate/currency_rupee_circle.svg";
-import CustomSelect from "@/app/components/profileUpdate/CustomSelect";
-import FormSection from "@/app/components/profileUpdate/FormSection";
-import OptionButtons from "@/app/components/profileUpdate/OptionButtons";
-import OtherBenefits from "@/app/components/profileUpdate/OtherBenefits";
+import TeachingIcon from "../../images/profileUpdate/teaching-PQcw9eHGUz.svg";
+import NonTeachingIcon from "../../images/profileUpdate/Group 459 1.svg";
+import DownIcon from "../../images/profileUpdate/fi_chevron-down.svg";
+import RightIcon from "../../images/profileUpdate/fi_arrow-right.svg";
+import RupeesIcon from "../../images/profileUpdate/currency_rupee_circle.svg";
+import CustomSelect from "./CustomSelect";
+import FormSection from "./FormSection";
+import OptionButtons from "./OptionButtons";
+import OtherBenefits from "./OtherBenefits";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import OptionButtonsWithIcons from "@/app/components/profileUpdate/OptionButtonsWithIcon";
-import { useContext } from "react";
-import { JobContext } from "@/app/components/profileUpdate/JobContext";
+import OptionButtonsWithIcons from "./OptionButtonsWithIcon";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateJobDetails,
+  setSelectedRole,
+  setSelectedJobType,
+  setSelectedShiftTiming,
+  setSelectedWorkMode,
+  setSelectedSkills,
+  setDeadline,
+} from "../../libs/store/features/jobDetails/jobDetailsSlice";
 
 const jobCategoryOptions = [
   { label: "Teaching", icon: TeachingIcon },
@@ -23,89 +32,77 @@ const jobCategoryOptions = [
 ];
 
 const JobDetailsComponent = () => {
-  const { jobDetails, setJobDetails } = useContext(JobContext);
+  const dispatch = useDispatch();
+  const jobDetails = useSelector((state) => state.jobDetails);
 
   const roleOptions = ["Teaching", "Non-teaching"];
-
   const jobType = ["full-time", "part-time", "contract", "visiting"];
   const shiftTiming = ["Day shift", "night shift", "evening shift"];
   const workMode = ["on site", "remote", "hybrid"];
 
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [selectedRole, setSelectedRole] = useState(roleOptions[0]);
-  const [selectedJobType, setSelectedJobType] = useState(jobType[0]);
-  const [selectedShiftTiming, setSelectedShiftTiming] = useState(
-    shiftTiming[0]
-  );
-  const [selectedWorkMode, setSelectedWorkMode] = useState(workMode[0]);
-
-  const handleRoleSelect = (option) => {
-    setSelectedRole(option);
-  };
-
-  const handleShiftSelect = (option) => {
-    setSelectedShiftTiming(option);
-  };
-
-  const handleWorkModeSelect = (option) => {
-    setSelectedWorkMode(option);
-  };
-  const handleJobTypeSelect = (option) => {
-    setSelectedJobType(option);
-  };
-
-  const router = useRouter();
-  const [formData, setFormData] = useState({
-    jobDescription: "",
-    minimumQualification: "",
-    course: "",
-    isFresher: false,
-    minExperience: "",
-    maxExperience: "",
-    englishLevel: "",
-    vacancies: "",
-  });
+  // const [selectedSkills, setSelectedSkills] = useState([]);
+  // const [selectedRole, setSelectedRole] = useState(roleOptions[0]);
+  // const [selectedJobType, setSelectedJobType] = useState(jobType[0]);
+  // const [selectedShiftTiming, setSelectedShiftTiming] = useState(
+  //   shiftTiming[0]
+  // );
+  // const [selectedWorkMode, setSelectedWorkMode] = useState(workMode[0]);
 
   const [deadline, setDeadline] = useState(null);
 
+  const handleRoleSelect = (option) => {
+    dispatch(setSelectedRole(option));
+  };
+
+  const handleShiftSelect = (option) => {
+    dispatch(setSelectedShiftTiming(option));
+  };
+
+  const handleWorkModeSelect = (option) => {
+    dispatch(setSelectedWorkMode(option));
+  };
+  const handleJobTypeSelect = (option) => {
+    dispatch(setSelectedJobType(option));
+  };
+
+  const router = useRouter();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add the selected options to the form data before routing
-    const updatedFormData = {
-      ...formData,
-      role: selectedRole,
-      shift: selectedShiftTiming,
-      workMode: selectedWorkMode,
-      selectedItems: selectedItems,
-    };
-    console.log("Form Data:", updatedFormData);
-    router.push("/profile-update/job-description");
+    console.log("Redux Form Data:", jobDetails);
+    router.push("/job-description");
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setJobDetails((prevDetails) => ({
-      ...prevDetails,
-      [name]: value,
-    }));
+    dispatch(updateJobDetails({ [name]: value }));
   };
+
+  const skillsOptions = [
+    { label: "JavaScript", value: "javascript" },
+    { label: "React", value: "react" },
+    { label: "Node.js", value: "nodejs" },
+    { label: "CSS", value: "css" },
+    { label: "HTML", value: "html" },
+  ];
 
   return (
     <form onSubmit={handleSubmit} className="p-4">
       <FormSection title={"Job Category"}>
         <OptionButtonsWithIcons
-          options={jobCategoryOptions }
+          options={jobCategoryOptions}
           onSelect={handleRoleSelect}
-          value={jobDetails.category || ""}
+          value={jobDetails.selectedRole}
         />
       </FormSection>
 
       <CustomSelect
         label="Skills"
         placeholder="Add a skill"
-        options={["JavaScript", "React", "Node.js", "CSS", "HTML"]}
-        selectedItems={selectedItems}
-        setSelectedItems={setSelectedItems}
+        options={skillsOptions}
+        selectedSkills={jobDetails.selectedSkills}
+        value={jobDetails.selectedSkills}
+        onChange={(skills) => dispatch(setSelectedSkills(skills))}
       />
 
       <FormSection title={"Subject"}>
@@ -113,6 +110,9 @@ const JobDetailsComponent = () => {
           type="text"
           placeholder="Enter your Subject"
           className="p-[16px] text-[14px] font-normal w-full rounded-[15px] border"
+          name="subject"
+          value={jobDetails.subject}
+          onChange={handleChange}
         />
       </FormSection>
 
@@ -120,8 +120,7 @@ const JobDetailsComponent = () => {
         <OptionButtons
           options={jobType}
           onSelect={handleJobTypeSelect}
-          selectedOption={selectedJobType}
-          setSelectedOption={setSelectedJobType}
+          selectedOption={jobDetails.selectedJobType}
         />
       </FormSection>
 
@@ -129,8 +128,7 @@ const JobDetailsComponent = () => {
         <OptionButtons
           options={shiftTiming}
           onSelect={handleShiftSelect}
-          selectedOption={selectedShiftTiming}
-          setSelectedOption={setSelectedShiftTiming}
+          selectedOption={jobDetails.selectedShiftTiming}
         />
       </FormSection>
 
@@ -138,8 +136,7 @@ const JobDetailsComponent = () => {
         <OptionButtons
           options={workMode}
           onSelect={handleWorkModeSelect}
-          selectedOption={selectedWorkMode}
-          setSelectedOption={setSelectedWorkMode}
+          selectedOption={jobDetails.selectedWorkMode}
         />
       </FormSection>
 
@@ -185,7 +182,8 @@ const JobDetailsComponent = () => {
       <FormSection title={"Job title"}>
         <input
           type="text"
-          placeholder=""
+          placeholder="Enter job title"
+          name="jobTitle"
           className="p-[16px] text-[14px] font-normal w-full rounded-[15px] border"
           value={jobDetails.jobTitle || ""}
           onChange={handleChange}
@@ -232,7 +230,7 @@ const JobDetailsComponent = () => {
                 name="minEx"
                 id="minEx"
                 placeholder=""
-                className="text-[14px] text-[#9199A3] font-normal w-full border rounded-[15px] p-[17px]"
+                className="text-[14px] pl-10 text-[#9199A3] font-normal w-full border rounded-[15px] p-[17px]"
                 onChange={handleChange}
                 value={jobDetails.minEx || ""}
               />
@@ -258,7 +256,7 @@ const JobDetailsComponent = () => {
                 name="maxEx"
                 id="maxEx"
                 placeholder=""
-                className="text-[14px] text-[#9199A3] font-normal w-full border rounded-[15px] p-[17px]"
+                className="text-[14px] pl-10 text-[#9199A3] font-normal w-full border rounded-[15px] p-[17px]"
                 onChange={handleChange}
                 value={jobDetails.maxEx || ""}
               />
@@ -278,26 +276,21 @@ const JobDetailsComponent = () => {
 
       <FormSection title={"Deadline"}>
         <DatePicker
-          selected={deadline}
-          onChange={(date) => setDeadline(date)}
+          selected={jobDetails.deadline}
+          name="deadline"
+          onChange={(date) => dispatch(setDeadline(date))}
           dateFormat="dd/MM/yyyy"
           className="p-[16px] text-[14px] font-normal w-full rounded-[15px] border"
           placeholderText="DD/MM/YYYY"
         />
       </FormSection>
 
-      <input
-        type="text"
-        name="subject"
-        value={jobDetails.subject || ""}
-        onChange={handleChange}
-      />
-
-<button
+      <button
         type="submit"
-        className="bg-[#0A65CC] text-white text-[16px] font-bold px-[32px] py-[16px] rounded-[20px]"
+        className="flex items-center gap-3 bg-[#0A65CC] text-white text-[16px] font-bold px-[32px] py-[16px] rounded-[20px]"
       >
-        Save & Next
+        Save & Next{" "}
+        <Image src={RightIcon} width={24} height={24} alt="right icon" />
       </button>
     </form>
   );

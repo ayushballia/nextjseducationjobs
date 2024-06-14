@@ -2,29 +2,29 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import LawyerIcon from "@/app/images/profileUpdate/Lawyer.png";
+import LawyerIcon from "../../images/profileUpdate/Lawyer.png";
 import { usePathname } from "next/navigation";
-import userIcon from "@/app/images/profileUpdate/UserBlue.svg";
-import userCircleIcon from "@/app/images/profileUpdate/UserCircle.svg";
-import adsClickIcon from "@/app/images/profileUpdate/ads_click.svg";
-import AtIcon from "@/app/images/profileUpdate/At.svg";
+import userIcon from "../../images/profileUpdate/UserBlue.svg";
+import userCircleIcon from "../../images/profileUpdate/UserCircle.svg";
+import adsClickIcon from "../../images/profileUpdate/ads_click.svg";
+import AtIcon from "../../images/profileUpdate/At.svg";
 
 const Layout = ({ children }) => {
   const path = usePathname(); // Use usePathname hook to get the current path
 
   const steps = [
-    { name: "Job Details", path: "/profile-update/job-details", icon: userIcon },
+    { name: "Job Details", path: "/", icon: userIcon },
     {
       name: "Job Description",
-      path: "/profile-update/job-description",
+      path: "/job-description",
       icon: userCircleIcon,
     },
     {
       name: "Interview Process",
-      path: "/profile-update/interview-process",
+      path: "/interview-process",
       icon: adsClickIcon,
     },
-    { name: "Preview", path: "/profile-update/preview", icon: AtIcon },
+    { name: "Preview", path: "/preview", icon: AtIcon },
   ];
 
   const getStepIndex = (path) => steps.findIndex((step) => step.path === path);

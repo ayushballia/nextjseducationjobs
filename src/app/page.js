@@ -1,7 +1,12 @@
 import Image from "next/image";
+import Layout from "./components/profileUpdate/Layout";
+import JobDetailsComponent from './components/profileUpdate/JobDetailsComponent'
+
 
 export default function Home() {
   return (
-    <h1>Education jobs</h1>
+    <Layout>
+      <JobDetailsComponent />
+    </Layout>
   );
 }

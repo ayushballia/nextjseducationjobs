@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import CloseIcon from "@/app/images/profileUpdate/close_small.svg";
+import CloseIcon from "../../images/profileUpdate/close_small.svg";
 
 const OtherBenefit = ({ text }) => (
   <p className="flex justify-evenly items-center gap-2 text-[16px] text-[#2677D2] font-normal bg-[#DBEAFE] px-[16px] py-[13px] border border-[#00000033] rounded-[10px]">

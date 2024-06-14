@@ -1,33 +1,27 @@
 "use client";
 
-import React, { useContext } from "react";
 import { useRouter } from "next/navigation";
-import { JobContext } from "@/app/components/profileUpdate/JobContext";
+import RightIcon from "../../images/profileUpdate/fi_arrow-right.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { setInterviewMethod } from "../../libs/store/features/interviewProcess/interviewProcessSlice";
+import Image from "next/image";
 
 const InterviewProcessComponent = () => {
-  const { interviewProcess, setInterviewProcess } = useContext(JobContext);
+  const interviewMethod = useSelector((state) => state.interviewProcess.interviewMethod);
+  const dispatch = useDispatch();
   const router = useRouter();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInterviewProcess((prevProcess) => ({
-      ...prevProcess,
-      [name]: value,
-    }));
-  };
 
   const handleSelectChange = (e) => {
     const { value } = e.target;
-    setInterviewProcess((prevProcess) => ({
-      ...prevProcess,
-      interviewMethod: value,
-    }));
+    dispatch(setInterviewMethod(value));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    router.push("/profile-update/preview");
+    console.log("form data", interviewMethod);
+    router.push("/preview");
   };
+
 
   return (
     <form onSubmit={handleSubmit} className="p-4">
@@ -43,7 +37,7 @@ const InterviewProcessComponent = () => {
         <div className="relative my-4">
           <select
             name="interviewMethod"
-            value={interviewProcess.interviewMethod || ""}
+            value={interviewMethod || ""}
             onChange={handleSelectChange}
             className="block appearance-none w-full bg-white border border-[#E4E5E8] hover:border-gray-600 p-[17px] pr-[18px] text-[14px] text-[#767F8C] font-normal rounded-[15px] leading-tight focus:outline-none focus:shadow-outline"
           >
@@ -70,19 +64,13 @@ const InterviewProcessComponent = () => {
         </div>
       </label>
 
-      <input
-        type="text"
-        name="interviewMethod"
-        value={interviewProcess.interviewMethod || ""}
-        onChange={handleChange}
-        className="hidden"
-      />
 
       <button
         type="submit"
-        className="bg-[#0A65CC] text-white text-[16px] font-bold px-[32px] py-[16px] rounded-[20px] mt-6"
+        className="flex items-center gap-3 bg-[#0A65CC] text-white text-[16px] font-bold px-[32px] py-[16px] rounded-[20px]"
       >
-        Save & Next
+        Save & Next{" "}
+        <Image src={RightIcon} width={24} height={24} alt="right icon" />
       </button>
     </form>
   );
