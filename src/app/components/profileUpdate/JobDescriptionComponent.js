@@ -25,13 +25,13 @@ import {
   setMaxAge,
   setLanguage,
   setAssets,
-} from '../../libs/store/features/jobDescription/jobDescriptionSlice';
+} from "../../libs/store/features/jobDescription/jobDescriptionSlice";
 import Image from "next/image";
 
 const preferredGenderOption = [
   { label: "Male", icon: MaleIcon },
   { label: "Female", icon: FemaleIcon },
-  { label: "Other", icon: "" },
+  { label: "Any", icon: "" },
 ];
 
 const JobDescriptionComponent = () => {
@@ -43,7 +43,8 @@ const JobDescriptionComponent = () => {
   //   preferredGenderOption[0]
   // );
 
-  const handleChange = (name, value) => { // Changed handleChange function to accept name and value directly
+  const handleChange = (name, value) => {
+    // Changed handleChange function to accept name and value directly
     dispatch(name(value)); // Dispatching actions directly by passing action creators
   };
 
@@ -83,6 +84,8 @@ const JobDescriptionComponent = () => {
     console.log("form data", jobDescription);
     router.push("/interview-process");
   };
+
+  const handleBack = () => router.back();
 
   const qualificationOptions = [
     { label: "High School", value: "high_school" },
@@ -268,21 +271,23 @@ const JobDescriptionComponent = () => {
       </p>
       <OtherBenefits />
 
-      <button
-        type="button"
-        // onClick={handleBack}
-        className="bg-gray-500 text-white py-2 px-4 rounded"
-      >
-        Back
-      </button>
+      <div className="flex gap-4 my-7">
+        <button
+          type="button"
+          onClick={handleBack}
+          className="text-[16px] text-[#0A65CC] font-bold px-[32px] py-[16px] rounded-[20px] border border-[#0A65CC]"
+        >
+          Back
+        </button>
 
-      <button
-        type="submit"
-        className="flex items-center gap-3 bg-[#0A65CC] text-white text-[16px] font-bold px-[32px] py-[16px] rounded-[20px]"
-      >
-        Save & Next{" "}
-        <Image src={RightIcon} width={24} height={24} alt="right icon" />
-      </button>
+        <button
+          type="submit"
+          className="flex items-center gap-3 bg-[#0A65CC] text-white text-[16px] font-bold px-[32px] py-[16px] rounded-[20px]"
+        >
+          Save & Next{" "}
+          <Image src={RightIcon} width={24} height={24} alt="right icon" />
+        </button>
+      </div>
     </form>
   );
 };

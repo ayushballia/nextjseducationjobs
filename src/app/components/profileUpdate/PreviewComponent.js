@@ -23,7 +23,7 @@ const PreviewComponent = () => {
       {/* <h2 className="text-2xl font-bold mb-6">Preview of Your Job Posting</h2> */}
 
       <div className="mb-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-3">
           <h3 className="text-[24px] text-[#0A65CC] font-bold">Job Details</h3>
           <button
             onClick={() => handleEdit("/")}
@@ -77,7 +77,7 @@ const PreviewComponent = () => {
       </div>
 
       <div className="mb-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-3">
           <h3 className="text-[24px] text-[#0A65CC] font-bold">Job Description</h3>
           <button
             onClick={() => handleEdit("/job-description")}
@@ -129,7 +129,7 @@ const PreviewComponent = () => {
       </div>
 
       <div className="mb-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-3">
           <h3 className="text-[24px] text-[#0A65CC] font-bold">Interview Process</h3>
           <button
             onClick={() => handleEdit("/interview-process")}

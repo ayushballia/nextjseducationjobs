@@ -13,6 +13,7 @@ import FormSection from "./FormSection";
 import OptionButtons from "./OptionButtons";
 import OtherBenefits from "./OtherBenefits";
 import DatePicker from "react-datepicker";
+import CalenderIcon from "../../images/profileUpdate/CalendarBlank.svg";
 import "react-datepicker/dist/react-datepicker.css";
 import OptionButtonsWithIcons from "./OptionButtonsWithIcon";
 import { useDispatch, useSelector } from "react-redux";
@@ -223,7 +224,7 @@ const JobDetailsComponent = () => {
                 width={20}
                 height={20}
                 alt="rupees icon"
-                className="absolute left-4 top-4"
+                className="absolute left-4 top-[1.2rem]"
               />
               <input
                 type="text"
@@ -249,7 +250,7 @@ const JobDetailsComponent = () => {
                 width={20}
                 height={20}
                 alt="rupees icon"
-                className="absolute left-4 top-4"
+                className="absolute left-4 top-[1.2rem]"
               />
               <input
                 type="text"
@@ -270,19 +271,37 @@ const JobDetailsComponent = () => {
       </p>
       <OtherBenefits />
 
-      <p className="text-[16px] font-bold my-6">
+      <p className="flex gap-4 items-center text-[16px] font-bold my-6">
         Is there any joining fee required from the candidate?
+        <input id="fee" class="rounded" type="checkbox" name="fee" />
       </p>
 
       <FormSection title={"Deadline"}>
-        <DatePicker
-          selected={jobDetails.deadline}
-          name="deadline"
-          onChange={(date) => dispatch(setDeadline(date))}
-          dateFormat="dd/MM/yyyy"
-          className="p-[16px] text-[14px] font-normal w-full rounded-[15px] border"
-          placeholderText="DD/MM/YYYY"
-        />
+        <div className="relative w-full">
+          {/* <Image
+            src={CalenderIcon}
+            className="absolute right-5"
+            width={22}
+            height={22}
+            alt="calender icon"
+          /> */}
+          <input
+            type="date"
+            selected={jobDetails.deadline}
+            name="deadline"
+            onChange={(date) => dispatch(setDeadline(date))}
+            className="p-[16px] text-[14px] font-normal w-full rounded-[15px] border"
+            placeholderText="DD/MM/YYYY"
+          />
+          {/* <DatePicker
+            selected={jobDetails.deadline}
+            name="deadline"
+            onChange={(date) => dispatch(setDeadline(date))}
+            dateFormat="dd/MM/yyyy"
+            className="p-[16px] text-[14px] font-normal w-full rounded-[15px] border"
+            placeholderText="DD/MM/YYYY"
+          /> */}
+        </div>
       </FormSection>
 
       <button

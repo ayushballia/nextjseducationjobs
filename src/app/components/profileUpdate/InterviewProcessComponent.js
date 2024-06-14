@@ -7,7 +7,9 @@ import { setInterviewMethod } from "../../libs/store/features/interviewProcess/i
 import Image from "next/image";
 
 const InterviewProcessComponent = () => {
-  const interviewMethod = useSelector((state) => state.interviewProcess.interviewMethod);
+  const interviewMethod = useSelector(
+    (state) => state.interviewProcess.interviewMethod
+  );
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -22,6 +24,7 @@ const InterviewProcessComponent = () => {
     router.push("/preview");
   };
 
+  const handleBack = () => router.back();
 
   return (
     <form onSubmit={handleSubmit} className="p-4">
@@ -64,14 +67,23 @@ const InterviewProcessComponent = () => {
         </div>
       </label>
 
+      <div className="flex gap-4 my-7">
+        <button
+          type="button"
+          onClick={handleBack}
+          className="text-[16px] text-[#0A65CC] font-bold px-[32px] py-[16px] rounded-[20px] border border-[#0A65CC]"
+        >
+          Back
+        </button>
 
-      <button
-        type="submit"
-        className="flex items-center gap-3 bg-[#0A65CC] text-white text-[16px] font-bold px-[32px] py-[16px] rounded-[20px]"
-      >
-        Save & Next{" "}
-        <Image src={RightIcon} width={24} height={24} alt="right icon" />
-      </button>
+        <button
+          type="submit"
+          className="flex items-center gap-3 bg-[#0A65CC] text-white text-[16px] font-bold px-[32px] py-[16px] rounded-[20px]"
+        >
+          Save & Next{" "}
+          <Image src={RightIcon} width={24} height={24} alt="right icon" />
+        </button>
+      </div>
     </form>
   );
 };

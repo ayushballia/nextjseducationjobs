@@ -4,7 +4,13 @@ import React, { useState, useEffect } from "react";
 import { faChevronDown, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const CustomSelect = ({ label, placeholder, options = [], value = [], onChange }) => {
+const CustomSelect = ({
+  label,
+  placeholder,
+  options = [],
+  value = [],
+  onChange,
+}) => {
   const [showOptions, setShowOptions] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
@@ -47,17 +53,17 @@ const CustomSelect = ({ label, placeholder, options = [], value = [], onChange }
           </p>
         </div>
       </div>
-      <div className="border-[1px] rounded-[15px] border-gray-300 pt-2 pb-3 relative my-4">
-        <div className="flex gap-2 px-4">
+      <div className="border-[1px] rounded-[15px] border-gray-300 p-[16px] relative my-4">
+        <div className="flex items-center gap-2">
           {value.map((item, i) => (
             <div
-              className="flex border-[1px] rounded-[15px] border-gray-300 px-3 py-[6px] w-max cursor-pointer text-xs md:text-sm font-semibold text-white bg-blue-500"
+              className="flex gap-2 border-[1px] rounded-[15px] border-gray-300 px-3 py-[6px] w-max cursor-pointer text-xs md:text-sm font-semibold text-white bg-[#0A65CC]"
               key={i}
             >
               {item.label}
               <span
                 onClick={() => removeItem(item)}
-                className="pl-4 text-gray-400 hover:scale-105 hover:text-gray-600 transition-all"
+                className="text-gray-400 hover:scale-105 hover:text-gray-600 transition-all"
               >
                 <FontAwesomeIcon color="#fff" icon={faXmark} />
               </span>
