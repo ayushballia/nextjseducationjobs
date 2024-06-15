@@ -2,29 +2,49 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import LawyerIcon from "../../images/profileUpdate/Lawyer.png";
 import { usePathname } from "next/navigation";
-import userIcon from "../../images/profileUpdate/UserBlue.svg";
-import userCircleIcon from "../../images/profileUpdate/UserCircle.svg";
-import adsClickIcon from "../../images/profileUpdate/ads_click.svg";
-import AtIcon from "../../images/profileUpdate/At.svg";
+
+// Top navigation icons
+import userTopIcon from "../../images/profileUpdate/UserBlue.svg";
+import userCircleTopIcon from "../../images/profileUpdate/UserCircle.svg";
+import adsClickTopIcon from "../../images/profileUpdate/ads_click.svg";
+import AtTopIcon from "../../images/profileUpdate/At.svg";
+
+// Sidebar icons
+import LawyerIcon from "../../images/profileUpdate/Lawyer.svg";
+import ProfileIcon from "../../images/profileUpdate/Profiles.svg";
+// import userCircleSidebarIcon from "../../images/profileUpdate/UserCircleSidebar.svg";
+// import adsClickSidebarIcon from "../../images/profileUpdate/ads_clickSidebar.svg";
+// import AtSidebarIcon from "../../images/profileUpdate/AtSidebar.svg";
 
 const Layout = ({ children }) => {
   const path = usePathname(); // Use usePathname hook to get the current path
 
   const steps = [
-    { name: "Job Details", path: "/", icon: userIcon },
+    {
+      name: "Job Details",
+      path: "/",
+      topIcon: userTopIcon,
+      sidebarIcon: LawyerIcon,
+    },
     {
       name: "Job Description",
       path: "/job-description",
-      icon: userCircleIcon,
+      topIcon: userCircleTopIcon,
+      sidebarIcon: ProfileIcon,
     },
     {
       name: "Interview Process",
       path: "/interview-process",
-      icon: adsClickIcon,
+      topIcon: adsClickTopIcon,
+      sidebarIcon: ProfileIcon,
     },
-    { name: "Preview", path: "/preview", icon: AtIcon },
+    {
+      name: "Preview",
+      path: "/preview",
+      topIcon: AtTopIcon,
+      sidebarIcon: ProfileIcon,
+    },
   ];
 
   const getStepIndex = (path) => steps.findIndex((step) => step.path === path);
@@ -47,15 +67,16 @@ const Layout = ({ children }) => {
                   index <= currentStepIndex ? "font-bold" : ""
                 }`}
               >
-                <div className="flex items-center justify-center bg-[#0043CE] p-1 rounded-full">
+                <div className="flex items-center justify-center p-1 rounded-[50%] bg-[#0043CE]">
                   <Image
-                    src={LawyerIcon}
-                    width={16}
-                    height={16}
+                    src={step.sidebarIcon}
+                    width={100}
+                    height={100}
+                    className="w-full"
                     alt="detail icon"
                   />
                 </div>
-                {step.name}
+                <span className="text-[18px]">{step.name}</span>
               </Link>
             </li>
           ))}
@@ -76,8 +97,14 @@ const Layout = ({ children }) => {
                     : "text-[#ADB2BA]"
                 }`}
               >
-                <Image src={step.icon} width={24} height={24} alt={step.name} />{" "}
-                {step.name}
+                <Image
+                  src={step.topIcon}
+                  width={24}
+                  height={24}
+                  className="w-auto"
+                  alt={step.name}
+                />{" "}
+                <span className="text-[16px]">{step.name}</span>
               </Link>
             </div>
           ))}

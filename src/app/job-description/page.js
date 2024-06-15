@@ -1,17 +1,16 @@
-import React from 'react'
+import React from "react";
 import Layout from "../components/profileUpdate/Layout";
-import { JobProvider } from "../components/profileUpdate/JobContext";
-import JobDescriptionComponent from '../components/profileUpdate/JobDescriptionComponent';
-
+import JobDescriptionComponent from "../components/profileUpdate/JobDescriptionComponent";
+import StateProvider from "../StateProvider";
 
 const JobDescription = () => {
   return (
-    <JobProvider>
+    <StateProvider>
       <Layout>
         <JobDescriptionComponent />
       </Layout>
-    </JobProvider>
-  )
-}
+    </StateProvider>
+  );
+};
 
-export default JobDescription
+export default JobDescription;

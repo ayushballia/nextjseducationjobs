@@ -1,16 +1,16 @@
 import React from 'react'
+import StateProvider from '../StateProvider';
 import Layout from "../components/profileUpdate/Layout";
-import { JobProvider } from "../components/profileUpdate/JobContext";
 import InterviewProcessComponent from '../components/profileUpdate/InterviewProcessComponent';
 
 
 const JobDescription = () => {
   return (
-    <JobProvider>
+    <StateProvider>
       <Layout>
         <InterviewProcessComponent />
       </Layout>
-    </JobProvider>
+    </StateProvider>
   )
 }
 
