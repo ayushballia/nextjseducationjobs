@@ -27,6 +27,7 @@ import {
   setAssets,
 } from "../../libs/store/features/jobDescription/jobDescriptionSlice";
 import Image from "next/image";
+import RichTextEditor from "./RichTextEditor";
 
 const preferredGenderOption = [
   { label: "Male", icon: MaleIcon },
@@ -109,7 +110,8 @@ const JobDescriptionComponent = () => {
 
   return (
     <form onSubmit={handleSubmit} className="p-4">
-      <TextEditor />
+      <RichTextEditor/>
+      
 
       <div className="grid grid-cols-2 gap-8">
         <Dropdown
